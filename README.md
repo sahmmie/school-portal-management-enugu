@@ -1,8 +1,7 @@
-# Fibus backend application
+# school-portal-management-enugu
 
 -this kit includes:
 express
 cloudinary
 jsonwebtoken
 mongoose
-# school-portal-management-enugu
