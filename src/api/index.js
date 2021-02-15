@@ -1,5 +1,10 @@
 import { Router } from 'express';
 import staffs from './routes/staffs';
+import classes from './routes/classes';
+import galleries from './routes/galleries';
+import lesson_notes from './routes/lesson_notes';
+import news from './routes/news';
+import students from './routes/students';
 import socketUserAuth from './middleware/socket_userauth';
 import { Server } from 'socket.io';
 
