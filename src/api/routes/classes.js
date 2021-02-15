@@ -1,24 +1,20 @@
 import {
     Router
 } from 'express';
-import staffController from '../../controllers/staff';
+import classController from '../../controllers/class';
 import upload from '../../services/multerService';
 import staffAuths from '../middleware/staffAuths';
 
 const route = Router();
 export default (app) => {
-    app.use('/staffs', route);
+    app.use('/classes', route);
 
-    route.post('/signup', staffController.createStaff);
+    route.post('/create', classController.createClass);
 
-    route.post('/delete/:id', staffController.deleteStaff);
+    route.post('/delete/:id', classController.deleteClass);
 
-    route.post('/edit/:id', upload.any(), staffController.editStaff);
+    route.post('/edit/:id', upload.any(), classController.editClass);
 
-    route.post('/:id', staffController.getStaffById);
-
-    route.post('', staffAuths.auth, staffAuths.permit('admin'), staffController.getStaffs);
-
-    route.get('/reset', staffAuths.auth, staffController.resetPassword);
+    route.post('/:class', classController.getClassByClass);
 
 };

@@ -1,24 +1,22 @@
 import {
     Router
 } from 'express';
-import staffController from '../../controllers/staff';
+import newsController from '../../controllers/news';
 import upload from '../../services/multerService';
 import staffAuths from '../middleware/staffAuths';
 
 const route = Router();
 export default (app) => {
-    app.use('/staffs', route);
+    app.use('/news', route);
 
-    route.post('/signup', staffController.createStaff);
+    route.post('/create', newsController.createNews);
 
-    route.post('/delete/:id', staffController.deleteStaff);
+    route.post('/delete/:id', newsController.deleteNews);
 
-    route.post('/edit/:id', upload.any(), staffController.editStaff);
+    route.post('/edit/:id', upload.any(), newsController.editNews);
 
-    route.post('/:id', staffController.getStaffById);
+    route.post('/:id', newsController.getNewsById);
 
-    route.post('', staffAuths.auth, staffAuths.permit('admin'), staffController.getStaffs);
-
-    route.get('/reset', staffAuths.auth, staffController.resetPassword);
+    route.post('', staffAuths.auth, staffAuths.permit('admin'), newsController.getNews);
 
 };

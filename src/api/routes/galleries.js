@@ -1,24 +1,22 @@
 import {
     Router
 } from 'express';
-import staffController from '../../controllers/staff';
+import galleryController from '../../controllers/gallery';
 import upload from '../../services/multerService';
 import staffAuths from '../middleware/staffAuths';
 
 const route = Router();
 export default (app) => {
-    app.use('/staffs', route);
+    app.use('/galleries', route);
 
-    route.post('/signup', staffController.createStaff);
+    route.post('/create', galleryController.createGallery);
 
-    route.post('/delete/:id', staffController.deleteStaff);
+    route.post('/delete/:id', galleryController.deleteGallery);
 
-    route.post('/edit/:id', upload.any(), staffController.editStaff);
+    route.post('/edit/:id', upload.any(), galleryController.editGallery);
 
-    route.post('/:id', staffController.getStaffById);
+    route.post('/:id', galleryController.getGalleryById);
 
-    route.post('', staffAuths.auth, staffAuths.permit('admin'), staffController.getStaffs);
-
-    route.get('/reset', staffAuths.auth, staffController.resetPassword);
+    route.post('', staffAuths.auth, staffAuths.permit('admin'), galleryController.getGalleries);
 
 };

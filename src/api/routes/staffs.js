@@ -9,7 +9,7 @@ const route = Router();
 export default (app) => {
     app.use('/staffs', route);
 
-    route.post('/signup', staffController.createStaff);
+    route.post('/create', staffController.createStaff);
 
     route.post('/delete/:id', staffController.deleteStaff);
 

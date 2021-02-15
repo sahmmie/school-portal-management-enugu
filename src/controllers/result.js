@@ -30,6 +30,22 @@ const resultController = {
         } catch (error) {
             return serverResponse(res, error.message, 400);
         }
+    },
+
+    getResults: async(req, res) => {
+        try {
+
+        } catch (error) {
+            return serverResponse(res, error.message, 400);
+        }
+    },
+
+    getResultByStudentRegno: async(req, res) => {
+        try {
+
+        } catch (error) {
+            return serverResponse(res, error.message, 400);
+        }
     }
 }
 
