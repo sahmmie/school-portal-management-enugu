@@ -27,6 +27,10 @@ export default (io) => {
     });
 
     staffs(app);
-
+    classes(app);
+    galleries(app);
+    lesson_notes(app);
+    news(app);
+    students(app);
     return app;
 };
