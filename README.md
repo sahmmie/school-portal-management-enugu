@@ -5,3 +5,4 @@ express
 cloudinary
 jsonwebtoken
 mongoose
+# schoolportal_backend
