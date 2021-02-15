@@ -4,65 +4,54 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import config from '../config/index';
 
-const { Schema } = mongoose;
+const {
+    Schema
+} = mongoose;
 
-const userSchema = new Schema({
-    firstName: {
-        type: String,
-        lowercase: true,
-        maxlength: 100,
-        required: true
-    },
-    lastName: {
-        type: String,
-        lowercase: true,
-        maxlength: 100,
-        required: true
-    },
-    email: {
-        type: String,
+const studentSchema = new Schema({
+    surname: {
         trim: true,
-        lowercase: true,
+        type: String,
         required: true,
-        unique: true,
     },
     password: {
         type: String,
         required: true,
-        minlength: 5,
-        validate(value) {
-            if (value.includes('password')) {
-                throw new Error('Your password must not include "password"');
-            }
-        },
+        default: '123456'
     },
-    profileCompleted: {
-        type: Boolean,
-        default: false,
+    othername: {
+        trim: true,
+        type: String,
     },
-    isOnline: {
-        type: Boolean,
-        default: false,
-    },
-    socketId: {
-        type: String
-    },
-    isVerified: {
-        type: Boolean,
-        default: false,
-    },
-    type: {
+    firstname: {
+        trim: true,
         type: String,
         required: true,
-        default: 'user',
-        enum: ['user', 'company', 'public_figure']
     },
-    confirmationCode: {
+    guardian_phone: {
         type: Number,
+        // required: true
     },
-    profile: {
+    regno: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    school_id: {
         type: Schema.Types.ObjectId,
-        ref: 'Profile',
+        required: true,
+        ref: 'School',
+    },
+    school_category: {
+        type: String,
+        required: true,
+    },
+    school_type: {
+        type: String,
+        required: true,
+    },
+    dob: {
+        type: Date
     },
     tokens: [{
         token: {
@@ -70,14 +59,40 @@ const userSchema = new Schema({
             required: true,
         },
     }, ],
-    ipAddress: {
+    passport: {
+        type: String
+    },
+    state: {
+        type: String,
+    },
+    medical_condition: {
         type: String,
         default: null,
     },
-}, { timestamps: true });
+    class: {
+        type: Number,
+            required: true,
+            enum: [4, 5, 6, 7, 8, 9, 10, 11, 12]
+    },
+    religon: {
+        type: String
+    },
+    address: {
+        type: String,
+    },
+    disabled: {
+        type: Boolean,
+        default: false,
+    },
+    isUpdated: {
+        type: Boolean
+    }
+}, {
+    timestamps: true
+});
 
 // HASHING OF PASSWORD //
-userSchema.pre('save', function hashPassword(next) {
+studentSchema.pre('save', function hashPassword(next) {
     try {
         if (this.isModified('password')) {
             const salt = bcrypt.genSaltSync(10);
@@ -93,7 +108,7 @@ userSchema.pre('save', function hashPassword(next) {
 });
 
 // COMPARING OF PASSWORD
-userSchema.methods.comparePassword = async function(plainPassword) {
+studentSchema.methods.comparePassword = async function(plainPassword) {
     try {
         const user = this;
         const isMatch = await bcrypt.compareSync(plainPassword, user.password);
@@ -105,12 +120,16 @@ userSchema.methods.comparePassword = async function(plainPassword) {
 
 
 // GENERATING OF TOKEN
-userSchema.methods.generateToken = async function() {
+studentSchema.methods.generateToken = async function() {
     try {
         const user = this;
-        const token = jwt.sign({ _id: user._id.toString() }, config.secretOrKey);
+        const token = jwt.sign({
+            _id: user._id.toString()
+        }, config.secretOrKey);
 
-        user.tokens = user.tokens.concat({ token });
+        user.tokens = user.tokens.concat({
+            token
+        });
         await user.save();
         return token;
     } catch (error) {
@@ -119,7 +138,7 @@ userSchema.methods.generateToken = async function() {
 };
 
 // GENERATE REST PASSWORD TOKEN
-userSchema.methods.generatePasswordReset = function() {
+studentSchema.methods.generatePasswordReset = function() {
     try {
         const user = this;
         user.resetPasswordToken = crypto.randomBytes(20).toString('hex');
@@ -129,7 +148,7 @@ userSchema.methods.generatePasswordReset = function() {
     }
 };
 
-userSchema.methods.toJSON = function() {
+studentSchema.methods.toJSON = function() {
     const user = this
     const userObject = user.toObject()
 
@@ -139,10 +158,10 @@ userSchema.methods.toJSON = function() {
     return userObject;
 };
 
-userSchema.index({
+studentSchema.index({
     firstName: "text",
     lastName: "text",
 })
 
-const User = mongoose.model('User', userSchema);
-export default User;
+const Student = mongoose.model('Student', studentSchema);
+export default Student;

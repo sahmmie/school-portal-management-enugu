@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import users from './routes/users';
+import staffs from './routes/staffs';
 import socketUserAuth from './middleware/socket_userauth';
 import { Server } from 'socket.io';
 
@@ -21,7 +21,7 @@ export default (io) => {
         });
     });
 
-    users(app);
+    staffs(app);
 
     return app;
 };
